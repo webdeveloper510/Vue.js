@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from '@/components/HelloWorld.vue'
+import HelloWorld from './components/HelloWorld.vue';
 </script>
 
 <template>
@@ -13,10 +13,10 @@ import HelloWorld from '@/components/HelloWorld.vue'
        <div class="col-md-3">
         <p>0800-441-4321</p>
       </div>
-       <div class="col-md-3">
+       <div class="col-md-3 text-center">
         <p> FACEBOOK</p>
       </div>
-       <div class="col-md-3">
+       <div class="col-md-3 text-center">
         <p> INSTAGRAM</p>
       </div>
     </div>
@@ -24,13 +24,13 @@ import HelloWorld from '@/components/HelloWorld.vue'
 </div>
   <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Navbar</a>
+        <div class="container">
+          <a class="navbar-brand" href="#"><img src="./assets/logo.png" height="70px" width="100%" alt="logo"/></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item">
                 <a class="nav-link " href="#">PARTNER INSTITUTIONS</a>
               </li>
@@ -50,14 +50,15 @@ import HelloWorld from '@/components/HelloWorld.vue'
         </div>
       </nav>
   </header>
-    <div class="">
+    <div class="container-fluid">
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb mt-5">
           <li class="breadcrumb-item"><a href="#">MORE BRAZIL SCHOLARSHIP</a></li>
           <li class="breadcrumb-item active" aria-current="page">COURSES</li>
         </ol>
       </nav>
-      <h3>Courses with Scholarships - Bolsa Mais Brasil</h3>
+      <h3 class="mb-5">Courses with Scholarships - Bolsa Mais Brasil</h3>
+      <HelloWorld/>
     </div>
 </template>
 
