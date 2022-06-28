@@ -9,7 +9,7 @@ defineProps({
 
 <template>
 <div class="container-fluid">
-  <div class="row">
+  <div class="row mb-5">
    <div class="col-md-3">
       <div class="card institution">
         <div class="card-body">
@@ -59,7 +59,7 @@ defineProps({
       </div>
    </div>
    <div class="col-md-9">
-     <div class="card">
+     <div class="card institution">
        <div class="card-body">
          <div class="row">
            <div class="col-md-3">
@@ -132,9 +132,9 @@ defineProps({
                       Installments:<b> 47 </b></p>
                   </div>
                   <div class="col-md-3">
-                    <p>Monthly payment: <br/>
+                    <p class="p-0">Monthly payment: <br/>
                         <span class="frombrl">From BRL 466.50</span><br/>
-                        For <b> BRL <span class="brl">163.28</span> </b></p>
+                        For <b> BRL <br/><span class="brl">163.28</span> </b></p>
                         <small class="text-center">8785865 VB163.28 - 100</small>
                   </div>
                   <div class="col-md-3">
@@ -144,16 +144,29 @@ defineProps({
                   </div>
                 </div>
              </div>
-             <div class="col-md-3">
-                <a href="#">see details</a>
+             <div class="col-md-3 text-center">
+                <a href="#">see details</a> <br/>
                 <button class="btn btn-success btn-sm" type="button">CHOOSE THIS BAG</button>
              </div>
            </div>
          </div>
+
        </div>
      </div>
+     <!-- <div class="my-4">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+        </div> -->
    </div>
   </div>
+
   </div>
 </template>
 
@@ -163,20 +176,16 @@ h1 {
   font-size: 2.6rem;
   top: -10px;
 }
-
+span.brl {
+    font-size: 1.83em;
+    color: #21293e;
+    font-weight: bold;
+}
 h3 {
   font-size: 1.2rem;
 }
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
+span.frombrl {
+    text-decoration: line-through;
 }
 
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
-}
 </style>

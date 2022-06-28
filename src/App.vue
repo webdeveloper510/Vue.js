@@ -1,6 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue';
+import TheWelcome from './components/TheWelcome.vue';
+import WelcomeItem from './components/WelcomeItem.vue';
 </script>
 
 <template>
@@ -59,7 +61,10 @@ import HelloWorld from './components/HelloWorld.vue';
       </nav>
       <h3 class="mb-5">Courses with Scholarships - Bolsa Mais Brasil</h3>
       <HelloWorld/>
+      
     </div>
+    <TheWelcome/>
+    <WelcomeItem/>
 </template>
 
 <style>

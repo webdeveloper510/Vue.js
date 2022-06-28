@@ -108,3 +108,24 @@ img.imagess {
   overflow: auto;
   padding: 10px;
 }
+
+.whatsapp {
+  background: linear-gradient(rgba(33, 41, 62, 0.95), rgba(33, 41, 62, 0.95)) no-repeat;
+  color: white;
+  padding: 20px 0px;
+}
+
+p.contatoItemRodape i {
+  font-size: 2rem;
+  vertical-align: -webkit-baseline-middle;
+  margin-right: 8px;
+}
+
+p.contatoItemRodape {
+  font-size: 1.2rem;
+  margin: 0px !important;
+}
+.Rodape p {
+  margin-left: 42px;
+  margin-top: -10px;
+}

@@ -1,86 +1,66 @@
 <template>
   <div class="item">
-    <i>
-      <slot name="icon"></slot>
-    </i>
-    <div class="details">
-      <h3>
-        <slot name="heading"></slot>
-      </h3>
-      <slot></slot>
+    <div class="container">
+    <div class="row pt-4">
+       <div class="col-md-4">
+          <img src="../assets/logo.png" class="img-fluid" style="max-width: 290px;"/>
+          <p>Scholarships of up to 80% at the best schools and colleges in the country.
+             Choose the institution of your choice, register and start studying right now.</p>
+       </div>
+       <div class="col-md-4">
+          <h3>HELP CENTER</h3>
+          <p><a href="#">FAQ</a></p>
+          <p><a href="#">Contact us</a></p>
+          <p><a href="#">Support</a></p>
+       </div>
+       <div class="col-md-4">
+         <h3>THE PROGRAM</h3>
+         <p>The Bolsa Mais Brasil program was created to be the largest education incentive program in the country.
+            Our objective is to promote the inclusion of a large portion of the population that does not
+            enroll in public schools and universities, ensuring affordable tuition and quality study in the best private schools
+            and universities in the country through scholarships offered by institutions registered in our program.</p>
+       </div>
+    </div>
+    </div>
+    <div class="footer text-center">
+      <p>© By Bolsa Mais Brasil team . <br/>
+      All rights reserved. CNPJ: 35.056.893/0001-71</p>
+        <ul class="footerlist">
+          <li>Privacy & Security</li>
+          <li>Terms of Use</li>
+          <li>Frequently Asked Questions</li>
+          <li>Contact</li>
+          <li style="border:0px solid ;">Support</li>
+        </ul>
     </div>
   </div>
 </template>
 
 <style scoped>
-.item {
-  margin-top: 2rem;
-  display: flex;
+ul.footerlist li {
+    padding: 0px 10px;
+    border-right: 1px solid;
+}
+p {
+  color: #6c757d!important;
+}
+a {
+  color: #6c757d!important;
+  text-decoration: none;
 }
 
-.details {
-  flex: 1;
-  margin-left: 1rem;
+ h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+     color: #6c757d!important;
 }
-
-i {
-  display: flex;
-  place-items: center;
-  place-content: center;
-  width: 32px;
-  height: 32px;
-
-  color: var(--color-text);
+ul.footerlist {
+    display: inline-flex;
+    list-style: none;
 }
-
-h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-  margin-bottom: 0.4rem;
-  color: var(--color-heading);
-}
-
-@media (min-width: 1024px) {
-  .item {
-    margin-top: 0;
-    padding: 0.4rem 0 1rem calc(var(--section-gap) / 2);
-  }
-
-  i {
-    top: calc(50% - 25px);
-    left: -26px;
-    position: absolute;
-    border: 1px solid var(--color-border);
-    background: var(--color-background);
-    border-radius: 8px;
-    width: 50px;
-    height: 50px;
-  }
-
-  .item:before {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    bottom: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:after {
-    content: ' ';
-    border-left: 1px solid var(--color-border);
-    position: absolute;
-    left: 0;
-    top: calc(50% + 25px);
-    height: calc(50% - 25px);
-  }
-
-  .item:first-of-type:before {
-    display: none;
-  }
-
-  .item:last-of-type:after {
-    display: none;
-  }
+.footer.text-center {
+    background-color: #21293e;
+    color: white;
+    padding-top: 13px;
 }
 </style>
