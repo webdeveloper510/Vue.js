@@ -223,15 +223,31 @@ export default {
                 <h3>{{ details.course?.name }}</h3>
                 <div >
                 <label class="mt-3" >Modalities:</label> <br />
-                <button class="btn btn-outline-success btn-sm" type="button" v-for="data in mode1" :key='data'>{{ data }}</button>
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                  <div v-for="data in mode1" :key='data' class="mx-1">
+                    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                    <label class="btn btn-outline-success btn-sm" for="btncheck1" >{{ data }}</label>
+                  </div>
+                   
+                  </div>
+  
                 <br />
                 <label class="mt-3">Shifts :</label> <br />
-                <button class="btn btn-outline-success btn-sm" type="button"  v-for="data in shift1" :key='data'>{{ data }}</button>
+                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                  <div v-for="data in shift1" :key='data' class="mx-1">
+                    <input type="checkbox" class="btn-check" id="btncheck12" autocomplete="off">
+                    <label class="btn btn-outline-success btn-sm" for="btncheck12" >{{ data }}</label>
+                  </div>    
+                  </div>
                 <br />
                 <label class="mt-3">Units:</label> <br />
-                <div class="d-flex">
-                  <button class="btn btn-outline-success btn-sm" type="button" v-for="data in course1" :key='data'>{{ data }}</button>
-                </div>
+                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                  <div v-for="data in course1" :key='data' class="mx-1">
+                    <input type="checkbox" class="btn-check" id="btncheck13" autocomplete="off">
+                    <label class="btn btn-outline-success btn-sm" for="btncheck13" >{{ data }}</label>
+                  </div>    
+                  </div>
+              
               </div>
               </div>
             </div>
