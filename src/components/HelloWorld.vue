@@ -9,6 +9,8 @@ export default {
       details1: [],
       details2: [],
       details3: [],
+      details4: [],
+      details5: [],
       CS_DATA_LIST: [],
       filterResults: [],
       SCHOLARSHIPS: [],
@@ -19,6 +21,7 @@ export default {
       mode1: [],
       shift1: [],
       course1: [],
+      units: [],
 
       status: Boolean = false,
     }
@@ -44,22 +47,25 @@ export default {
       }),
         responseData.scholarships.map(async (t) => {
           const e = await t;
+          console.log('t', t)
           for (let t = 0; t < this.CS_DATA_LIST.length; t++)
             this.CS_DATA_LIST[t].course.name === e.course.name && this.CS_DATA_LIST[t].school.name === e.school.name && this.CS_DATA_LIST[t].content_level.name === e.content_level.name && this.CS_DATA_LIST[t].scholarships.push(e);
         });
 
-      this.details=this.CS_DATA_LIST[0]
+      this.details = this.CS_DATA_LIST[0]
+      this.details1 = this.CS_DATA_LIST[0]
       console.log(this.details)
       this.getMode()
     },
     getMode() {
       responseData.scholarships.map((mode, index) => {
         this.mode.push(mode.content_modality.name)
+        this.units.push(mode.unit.name)
         this.shift.push(mode.content_shift.name)
         this.course.push(mode.content_type.name)
         this.mode1.push(mode.content_modality.name)
         this.shift1.push(mode.content_shift.name)
-        this.course1.push(mode.content_type.name)
+
       })
 
       let unique_mode = [...new Set(this.mode)]
@@ -67,58 +73,126 @@ export default {
       let unique_course = [...new Set(this.course)]
       let unique_mode1 = [...new Set(this.mode1)]
       let unique_shift1 = [...new Set(this.shift1)]
-      let unique_course1 = [...new Set(this.course1)]
+      let units = [...new Set(this.units)]
       this.mode = unique_mode;
       this.shift = unique_shift;
       this.course = unique_course
       this.mode1 = unique_mode1;
       this.shift1 = unique_shift1;
-      this.course1 = unique_course1;
+      this.units = units;
+    },
+    changeModalities(data1) {
+      var filterData = []
+      // this.details.scholarships=[]
+      console.log(this.CS_DATA_LIST[0].scholarships.length)
+      // this.CS_DATA_LIST[0].scholarships.filter((data, index) => {
+      //       if(data.content_modality.name == data1){
+      //      return   filterData.push(data)
+
+      //       } 
+      //     }
+      //     )
+      responseData.scholarships.filter((data, index) => {
+        if (data.content_modality.name == data1) {
+          return filterData.push(data)
+
+        }
+      }
+      )
+      console.log(this.CS_DATA_LIST[0].scholarships.length)
+      this.details4['scholarships'] = filterData
+      this.details.scholarships = filterData;
+    },
+    changeShifts(data2) {
+      var filterData = []
+      if (this.details4.scholarships == undefined) {
+        alert('selecione a modalidade')
+      }
+      else {
+        this.details4.scholarships.filter((data, index) => {
+          if (data.content_shift.name == data2) {
+            return filterData.push(data)
+
+          }
+        }
+        )
+        this.details5['scholarships'] = filterData
+        this.details.scholarships = filterData;
+        console.log(this.details4)
+      }
+
+    },
+    changeUnits(data3) {
+      var filterData = []
+      if (this.details5.scholarships == undefined) {
+        alert('selecione a modalidade')
+      }
+      else {
+        this.details5.scholarships.filter((data, index) => {
+          if (data.unit.name == data3) {
+            return filterData.push(data)
+
+          }
+        }
+        )
+        this.details.scholarships = filterData;
+      }
     },
     modeChange(event) {
       this.filterResults = this.details1
       if (event.target.value != 'Ver Todos') {
-        this.status = true;
-        if (this.details3.length > 0) {
-          this.details = this.details3.filter((data, index) => {
-            return data.content_modality.name == event.target.value
-          }
-          )
-        }
-        else {
-          this.details = this.details1.filter((data, index) => {
-            return data.content_modality.name == event.target.value
-          }
-          )
+        var filterData=[];
+         responseData.scholarships.filter((data, index) => {
+        if (data.content_modality.name == event.target.value) {
+          return filterData.push(data)
+
         }
       }
-      this.details2 = this.details
+      )
+      console.log(this.CS_DATA_LIST[0].scholarships.length)
+      this.details4['scholarships'] = filterData
+      this.details.scholarships = filterData;
+      }
+    else{
+            this.details.scholarships = responseData.scholarships
+                  this.details4['scholarships'] =  responseData.scholarships
+    }
     },
     modeChange1(event) {
-
+console.log(this.details4)
+ var filterData=[];
       if (event.target.value != 'Ver Todos') {
-        this.status = true;
-        // this.newData = []
-        if (this.details2.length > 0) {
-          this.details = this.details2.filter((data, index) => {
-            return data.content_shift.name == event.target.value
-          })
+         if (this.details4.scholarships==undefined) {
+         responseData.scholarships.filter((data, index) => {
+        if (data.content_shift.name == event.target.value) {
+          return filterData.push(data)
+        }
+        this.details.scholarships=filterData
+        console.log(this.details)
+      }
+      )
         }
         else {
-          this.details = responseData.scholarships
-          this.details = this.details.filter((data, index) => {
-            return data.content_shift.name == event.target.value
-          })
-          this.details3 = this.details
+              this.details4.scholarships.filter((data, index) => {
+        if (data.content_shift.name == event.target.value) {
+          return filterData.push(data)
         }
+      this.details.scholarships=filterData
+      }
+      )
+          // this.details = this.details.filter((data, index) => {
+          //   return data.content_shift.name == event.target.value
+          // })
+          this.details3 = this.details.scholarships
+        }
+        
       }
       else {
-        if (this.details2.length != 0) {
-          this.details = this.details2
-        }
-        else {
-          this.details = this.details
-        }
+    
+            console.log('this is working12',this.details4)
+         this.details=this.details4
+         console.log(this.details)
+        
       }
     },
     modeChange2(event) {
@@ -217,47 +291,54 @@ export default {
                   <!-- <div v-html="data.more_bonus_text_button">
                   </div> -->
 
-           </div>
+                </div>
               </div>
-              <div class="col-md-9 ead" >
+              <div class="col-md-9 ead">
                 <h3>{{ details.course?.name }}</h3>
-                <div >
-                <label class="mt-3" >Modalities:</label> <br />
-                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                  <div v-for="data in mode1" :key='data' class="mx-1">
-                    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-                    <label class="btn btn-outline-success btn-sm" for="btncheck1" >{{ data }}</label>
+                <div>
+                  <label class="mt-3">Modalities:</label> <br />
+
+                  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <div v-for="data in mode1" :key='data' class="mx-1">
+                      <input type="radio" class="btn-check" name="btnradio" v-bind:id="data" autocomplete="off">
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data" @click="changeModalities(data)">{{
+                          data
+                      }}</label>
+                    </div>
                   </div>
-                   
+
+                  <br />
+                  <label class="mt-3">Shifts :</label> <br />
+                  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <div v-for="data in shift1" :key='data' class="mx-1">
+                      <input type="radio" class="btn-check" name="btnradio1" v-bind:id="data" autocomplete="off">
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data" @click="changeShifts(data)">{{
+                          data
+                      }}</label>
+                    </div>
                   </div>
-  
-                <br />
-                <label class="mt-3">Shifts :</label> <br />
-                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                  <div v-for="data in shift1" :key='data' class="mx-1">
-                    <input type="checkbox" class="btn-check" id="btncheck12" autocomplete="off">
-                    <label class="btn btn-outline-success btn-sm" for="btncheck12" >{{ data }}</label>
-                  </div>    
+                  <br />
+                  <label class="mt-3">Units:</label> <br />
+                  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"
+                    style="flex-wrap:wrap">
+                    <div v-for="data in units" :key='data' class="mx-1">
+                      <input type="radio" class="btn-check" name="btnradio2" v-bind:id="data" autocomplete="off">
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data" @click="changeUnits(data)">{{ data
+                      }}</label>
+                    </div>
                   </div>
-                <br />
-                <label class="mt-3">Units:</label> <br />
-                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                  <div v-for="data in course1" :key='data' class="mx-1">
-                    <input type="checkbox" class="btn-check" id="btncheck13" autocomplete="off">
-                    <label class="btn btn-outline-success btn-sm" for="btncheck13" >{{ data }}</label>
-                  </div>    
-                  </div>
-              
-              </div>
+
+                </div>
               </div>
             </div>
 
             <div class="my-4">
               <hr />
             </div>
-            <div class="payment" v-for="data in details.scholarships" :key='data' >
+            <div  v-if="details.scholarships?.length!=0">
+            <div class="payment" v-for="data in details.scholarships" :key='data'>
               <div class="row">
-                <div class="col-md-9" >
+                <div class="col-md-9">
                   <div class="row">
                     <div class="col-md-3">
                       <p>Modality: <b> {{ data?.content_modality?.name }} </b><br />
@@ -290,7 +371,10 @@ export default {
                 </div>
               </div>
             </div>
-
+         </div>
+         <div v-if="details.scholarships?.length==0">
+         <p>Não há bolsas disponíveis com os itens selecionados, mude a unidade, turno ou modalidade selecionada.</p>
+          </div>
           </div>
         </div>
         <!-- <div class="my-4">
