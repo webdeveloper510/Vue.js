@@ -63,7 +63,7 @@ export default {
         });
 
       this.details = this.CS_DATA_LIST
-      this.details5 = this.CS_DATA_LIST
+      // this.details5 = this.CS_DATA_LIST
       // console.log(this.details)
       this.getMode()
 
@@ -182,7 +182,9 @@ export default {
         )
         console.log(filterData)
          this.CS_DATA_LIST[index]['scholarships']=filterData
-        this.details=filterData;
+         this.details5=this.CS_DATA_LIST[index]['scholarships']
+         console.log(this.details5)
+        // this.details=filterData;
       }
 
     },
@@ -207,7 +209,9 @@ export default {
         )
         console.log(filterData)
          this.CS_DATA_LIST[index]['scholarships']=filterData
-          this.details=filterData;
+           this.details5=this.CS_DATA_LIST[index]['scholarships']
+            console.log(this.details5.length)
+          // this.details=filterData;
       }
     },
     modeChange(event) {
@@ -524,32 +528,33 @@ export default {
             <div class="my-4">
               <hr />
             </div>
-            <div v-if="details.scholarships?.length != 0">
-              <div class="payment" v-for="data in data.scholarships" :key='data'>
+            <div >
+              <div v-if="data.scholarships.length>0">
+              <div class="payment" v-for="data1 in data.scholarships" :key='data1'>
                 <div class="row">
                   <div class="col-md-9">
-                    <div class="row">
-                      <div class="col-md-3">
-                        <p>Modality: <b> {{ data?.content_modality?.name }} </b><br />
-                          Shift:<b> {{ data?.content_shift?.name }} </b><br />
-                          Unit:<b>{{ data?.unit?.name }} </b></p>
+                    <div class="row" >
+                      <div class="col-md-3" >
+                        <p>Modality: <b> {{ data1?.content_modality?.name }} </b><br />
+                          Shift:<b> {{ data1?.content_shift?.name }} </b><br />
+                          Unit:<b>{{ data1?.unit?.name }} </b></p>
                       </div>
                       <div class="col-md-3">
-                        <p>Type: <b> {{ data?.content_type?.name }} </b><br />
-                          's Degree Duration: <br /> <b>{{ data?.duration }} {{ data?.duration_type }} </b><br />
-                          Installments:<b> {{ data?.discount_installments }} </b></p>
+                        <p>Type: <b> {{ data1?.content_type?.name }} </b><br />
+                          's Degree Duration: <br /> <b>{{ data1?.duration }} {{ data1?.duration_type }} </b><br />
+                          Installments:<b> {{ data1?.discount_installments }} </b></p>
                       </div>
                       <div class="col-md-3">
                         <p class="p-0">Monthly payment: <br />
-                          <span class="frombrl">From BRL {{ data?.original_price }}</span><br />
-                          For <b> BRL <br /><span class="brl">{{ data?.comission_amount }}</span> </b>
+                          <span class="frombrl">From BRL {{ data1?.original_price }}</span><br />
+                          For <b> BRL <br /><span class="brl">{{ data1?.comission_amount }}</span> </b>
                         </p>
                         <small class="text-center">8785865 VB163.28 - 100</small>
                       </div>
                       <div class="col-md-3">
-                        <p>Scholarship: <b> {{ data?.percent }}%</b> <br />
+                        <p>Scholarship: <b> {{ data1?.percent }}%</b> <br />
                           Total Savings:
-                          <b> BRL {{ data?.economy_total }} </b>
+                          <b> BRL {{ data1?.economy_total }} </b>
                         </p>
                       </div>
                     </div>
@@ -560,11 +565,13 @@ export default {
                   </div>
                 </div>
               </div>
-            </div>
-            <div v-if="details.length == 0">
+              </div>
+               <div v-if="data.scholarships.length==0">
               <p>Não há bolsas disponíveis com os itens selecionados, mude a unidade, turno ou modalidade selecionada.
               </p>
             </div>
+            </div>
+         
           </div>
         </div>
         <!-- <div class="my-4">
