@@ -22,14 +22,22 @@ export default {
       shift1: [],
       course1: [],
       units: [],
-
+      modeValue: [],
+      shiftValue:[],
       status: Boolean = false,
     }
+  },
+  computed: {
+    sortedCategories() {
+
+    }
+
   },
   methods: {
     getData() {
       this.details = responseData.scholarships
-      this.details1 = responseData.scholarships
+      // this.details5 = responseData.scholarships
+      console.log(this.details1)
       // this.details.map((data)=>{
       //   console.log(data)
       // })
@@ -45,19 +53,22 @@ export default {
           this.CS_DATA_LIST.push(e);
         }
       }),
+
         responseData.scholarships.map(async (t) => {
           const e = await t;
-          console.log('t', t)
-          for (let t = 0; t < this.CS_DATA_LIST.length; t++)
+          var shifts = [], modalities = [], units = []
+          for (let t = 0; t < this.CS_DATA_LIST.length; t++) {
             this.CS_DATA_LIST[t].course.name === e.course.name && this.CS_DATA_LIST[t].school.name === e.school.name && this.CS_DATA_LIST[t].content_level.name === e.content_level.name && this.CS_DATA_LIST[t].scholarships.push(e);
+          }
         });
 
-      this.details = this.CS_DATA_LIST[0]
-      this.details1 = this.CS_DATA_LIST[0]
-      console.log(this.details)
+      this.details = this.CS_DATA_LIST
+      this.details5 = this.CS_DATA_LIST
+      // console.log(this.details)
       this.getMode()
+
     },
-    getMode() {
+    async getMode() {
       responseData.scholarships.map((mode, index) => {
         this.mode.push(mode.content_modality.name)
         this.units.push(mode.unit.name)
@@ -80,119 +91,178 @@ export default {
       this.mode1 = unique_mode1;
       this.shift1 = unique_shift1;
       this.units = units;
+
+      for (var i = 0; i < this.CS_DATA_LIST.length; i++) {
+        this.getModalities(await this.CS_DATA_LIST[i].scholarships, i)
+        this.getShifts(await this.CS_DATA_LIST[i].scholarships, i)
+        this.getUnitss(await this.CS_DATA_LIST[i].scholarships, i)
+        
+      }
     },
-    changeModalities(data1) {
-      var filterData = []
-      // this.details.scholarships=[]
-      console.log(this.CS_DATA_LIST[0].scholarships.length)
-      // this.CS_DATA_LIST[0].scholarships.filter((data, index) => {
-      //       if(data.content_modality.name == data1){
-      //      return   filterData.push(data)
+    getModalities(t, index) {
+      let e = "",
+        a = [];
 
-      //       } 
-      //     }
-      //     )
-      responseData.scholarships.filter((data, index) => {
-        if (data.content_modality.name == data1) {
-          return filterData.push(data)
+      t.map((t) => {
+        if (a.length > 0) {
+          let e = a.find((e) => e.id === t.content_modality.id);
+          null == e && a.push(t.content_modality);
+        } else a.push(t.content_modality);
+      })
+      this.CS_DATA_LIST[index].modalities.push(...a)
+    },
+    getShifts(t, index) {
+      let e = "",
+        a = [];
 
+      t.map((t) => {
+        if (a.length > 0) {
+          let e = a.find((e) => e.id === t.content_shift.id);
+          null == e && a.push(t.content_shift);
+        } else a.push(t.content_shift);
+      })
+
+      this.CS_DATA_LIST[index].shifts.push(...a)
+      console.log(this.CS_DATA_LIST)
+    },
+     getUnitss(t, index) {
+      let e = "",
+        a = [];
+
+      t.map((t) => {
+        if (a.length > 0) {
+          let e = a.find((e) => e.id === t.unit.id);
+          null == e && a.push(t.unit);
+        } else a.push(t.unit);
+      })
+
+      this.CS_DATA_LIST[index].units.push(...a)
+      
+    },
+    changeModalities(data1, index) {
+      var filterData = {
+        scholarships:[]
+      }
+      this.modeValue=[]
+      this.modeValue.push(data1.name)
+      console.log(this.CS_DATA_LIST[index].scholarships  )
+      this.CS_DATA_LIST[index].scholarships.filter((data, index) => {
+        console.log('i am here',data)
+        if (data.content_modality.name == data1.name) {
+          return filterData.scholarships.push(data)
         }
       }
       )
-      console.log(this.CS_DATA_LIST[0].scholarships.length)
-      this.details4['scholarships'] = filterData
-      this.details.scholarships = filterData;
+      console.log(index,filterData)
+    // this.CS_DATA_LIST[index]['scholarships'] = filterData.scholarships
+    this.details=filterData.scholarships
+      console.log('filterData',this.details)
     },
-    changeShifts(data2) {
+    changeShifts(data2,index) {
       var filterData = []
-      if (this.details4.scholarships == undefined) {
+      var filter1=[]
+      this.shiftValue=[]
+       this.shiftValue.push(data2.name)
+      filter1=this.details
+      delete filter1.scholarships
+      console.log('filter',filter1)
+      this.CS_DATA_LIST[index].scholarships=filter1
+      console.log(this.CS_DATA_LIST,index)
+      if (this.modeValue.length ==0 ) {
         alert('selecione a modalidade')
       }
       else {
-        this.details4.scholarships.filter((data, index) => {
-          if (data.content_shift.name == data2) {
+        console.log(this.CS_DATA_LIST)
+        this.CS_DATA_LIST[index].scholarships.filter((data, index) => {
+          if (data.content_shift.name == data2.name && data.content_modality.name == this.modeValue[0]) {
             return filterData.push(data)
 
           }
         }
         )
-        this.details5['scholarships'] = filterData
-        this.details.scholarships = filterData;
-        console.log(this.details4)
+        console.log(filterData)
+         this.CS_DATA_LIST[index]['scholarships']=filterData
+        this.details=filterData;
       }
 
     },
-    changeUnits(data3) {
-      var filterData = []
-      if (this.details5.scholarships == undefined) {
+    changeUnits(data3,index) {
+       var filterData = []
+      var filter1=[]
+      filter1=this.details
+      delete filter1.scholarships
+      this.CS_DATA_LIST[index].scholarships=filter1
+      console.log(this.CS_DATA_LIST,index)
+      if (this.modeValue.length ==0 ) {
         alert('selecione a modalidade')
       }
       else {
-        this.details5.scholarships.filter((data, index) => {
-          if (data.unit.name == data3) {
+        console.log(this.CS_DATA_LIST)
+        this.CS_DATA_LIST[index].scholarships.filter((data, index) => {
+          if (data.unit.name == data3.name && data.content_modality.name == this.modeValue[0] && data.content_shift.name == this.shiftValue[0]) {
             return filterData.push(data)
 
           }
         }
         )
-        this.details.scholarships = filterData;
+        console.log(filterData)
+         this.CS_DATA_LIST[index]['scholarships']=filterData
+          this.details=filterData;
       }
     },
     modeChange(event) {
       this.filterResults = this.details1
       if (event.target.value != 'Ver Todos') {
-        var filterData=[];
-         responseData.scholarships.filter((data, index) => {
-        if (data.content_modality.name == event.target.value) {
-          return filterData.push(data)
-
+        var filterData = [];
+        responseData.scholarships.filter((data, index) => {
+          if (data.content_modality.name == event.target.value) {
+            return filterData.push(data)
+          }
         }
+        )
+        this.details4['scholarships'] = filterData
+        this.details = filterData;
       }
-      )
-      console.log(this.CS_DATA_LIST[0].scholarships.length)
-      this.details4['scholarships'] = filterData
-      this.details.scholarships = filterData;
+      else {
+        this.details.scholarships = responseData.scholarships
+        this.details4['scholarships'] = responseData.scholarships
       }
-    else{
-            this.details.scholarships = responseData.scholarships
-                  this.details4['scholarships'] =  responseData.scholarships
-    }
     },
     modeChange1(event) {
-console.log(this.details4)
- var filterData=[];
+      console.log(this.details4)
+      var filterData = [];
       if (event.target.value != 'Ver Todos') {
-         if (this.details4.scholarships==undefined) {
-         responseData.scholarships.filter((data, index) => {
-        if (data.content_shift.name == event.target.value) {
-          return filterData.push(data)
-        }
-        this.details.scholarships=filterData
-        console.log(this.details)
-      }
-      )
+        if (this.details4.scholarships == undefined) {
+          responseData.scholarships.filter((data, index) => {
+            if (data.content_shift.name == event.target.value) {
+              return filterData.push(data)
+            }
+            this.details.scholarships = filterData
+            console.log(this.details)
+          }
+          )
         }
         else {
-              this.details4.scholarships.filter((data, index) => {
-        if (data.content_shift.name == event.target.value) {
-          return filterData.push(data)
-        }
-      this.details.scholarships=filterData
-      }
-      )
+          this.details4.scholarships.filter((data, index) => {
+            if (data.content_shift.name == event.target.value) {
+              return filterData.push(data)
+            }
+            // this.details.scholarships = filterData
+          }
+          )
           // this.details = this.details.filter((data, index) => {
           //   return data.content_shift.name == event.target.value
           // })
           this.details3 = this.details.scholarships
         }
-        
+
       }
       else {
-    
-            console.log('this is working12',this.details4)
-         this.details=this.details4
-         console.log(this.details)
-        
+
+        console.log('this is working12', this.details4)
+        this.details = this.details4
+        console.log(this.details)
+
       }
     },
     modeChange2(event) {
@@ -278,7 +348,7 @@ console.log(this.details4)
           </div>
         </div>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-9" v-if="CS_DATA_LIST.length == 0">
         <div class="card institution">
           <div class="card-body">
             <div class="row">
@@ -312,7 +382,7 @@ console.log(this.details4)
                   <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                     <div v-for="data in shift1" :key='data' class="mx-1">
                       <input type="radio" class="btn-check" name="btnradio1" v-bind:id="data" autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm" v-bind:for="data" @click="changeShifts(data)">{{
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data" @click="changeShifts(data,index)">{{
                           data
                       }}</label>
                     </div>
@@ -323,7 +393,7 @@ console.log(this.details4)
                     style="flex-wrap:wrap">
                     <div v-for="data in units" :key='data' class="mx-1">
                       <input type="radio" class="btn-check" name="btnradio2" v-bind:id="data" autocomplete="off">
-                      <label class="btn btn-outline-success btn-sm" v-bind:for="data" @click="changeUnits(data)">{{ data
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data" @click="changeUnits(data,index)">{{ data
                       }}</label>
                     </div>
                   </div>
@@ -335,46 +405,166 @@ console.log(this.details4)
             <div class="my-4">
               <hr />
             </div>
-            <div  v-if="details.scholarships?.length!=0">
-            <div class="payment" v-for="data in details.scholarships" :key='data'>
-              <div class="row">
-                <div class="col-md-9">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <p>Modality: <b> {{ data?.content_modality?.name }} </b><br />
-                        Shift:<b> {{ data?.content_shift?.name }} </b><br />
-                        Unit:<b>{{ data?.unit?.name }} </b></p>
-                    </div>
-                    <div class="col-md-3">
-                      <p>Type: <b> {{ data?.content_type?.name }} </b><br />
-                        's Degree Duration: <br /> <b>{{ data?.duration }} {{ data?.duration_type }} </b><br />
-                        Installments:<b> {{ data?.discount_installments }} </b></p>
-                    </div>
-                    <div class="col-md-3">
-                      <p class="p-0">Monthly payment: <br />
-                        <span class="frombrl">From BRL {{ data?.original_price }}</span><br />
-                        For <b> BRL <br /><span class="brl">{{ data?.comission_amount }}</span> </b>
-                      </p>
-                      <small class="text-center">8785865 VB163.28 - 100</small>
-                    </div>
-                    <div class="col-md-3">
-                      <p>Scholarship: <b> {{ data?.percent }}%</b> <br />
-                        Total Savings:
-                        <b> BRL {{ data?.economy_total }} </b>
-                      </p>
+            <div v-if="details.length != 0">
+              <div class="payment" v-for="data in details.scholarships" :key='data'>
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <p>Modality: <b> {{ data?.content_modality?.name }} </b><br />
+                          Shift:<b> {{ data?.content_shift?.name }} </b><br />
+                          Unit:<b>{{ data?.unit?.name }} </b></p>
+                      </div>
+                      <div class="col-md-3">
+                        <p>Type: <b> {{ data?.content_type?.name }} </b><br />
+                          's Degree Duration: <br /> <b>{{ data?.duration }} {{ data?.duration_type }} </b><br />
+                          Installments:<b> {{ data?.discount_installments }} </b></p>
+                      </div>
+                      <div class="col-md-3">
+                        <p class="p-0">Monthly payment: <br />
+                          <span class="frombrl">From BRL {{ data?.original_price }}</span><br />
+                          For <b> BRL <br /><span class="brl">{{ data?.comission_amount }}</span> </b>
+                        </p>
+                        <small class="text-center">8785865 VB163.28 - 100</small>
+                      </div>
+                      <div class="col-md-3">
+                        <p>Scholarship: <b> {{ data?.percent }}%</b> <br />
+                          Total Savings:
+                          <b> BRL {{ data?.economy_total }} </b>
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-md-3 text-center">
-                  <a href="#">see details</a> <br />
-                  <button class="btn btn-success btn-sm" type="button">CHOOSE THIS BAG</button>
+                  <div class="col-md-3 text-center">
+                    <a href="#">see details</a> <br />
+                    <button class="btn btn-success btn-sm" type="button">CHOOSE THIS BAG</button>
+                  </div>
                 </div>
               </div>
             </div>
-         </div>
-         <div v-if="details.scholarships?.length==0">
-         <p>Não há bolsas disponíveis com os itens selecionados, mude a unidade, turno ou modalidade selecionada.</p>
+            <div v-if="details.length == 0">
+              <p>Não há bolsas disponíveis com os itens selecionados, mude a unidade, turno ou modalidade selecionada.
+              </p>
+            </div>
           </div>
+        </div>
+        <!-- <div class="my-4">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+        </div> -->
+      </div>
+
+      <div class="col-md-9" v-if="CS_DATA_LIST.length > 0">
+        <div class="card institution" v-for="(data, index) in CS_DATA_LIST" :key='data'>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div>
+                  <img :src="data.school?.image" height="100" class="imagess" />
+                  <div class="text-center mb-4">
+                    <h3>{{ data.school?.name }}</h3>
+                  </div>
+                  <!-- <div v-html="data.more_bonus_text_button">
+                  </div> -->
+
+                </div>
+              </div>
+              <div class="col-md-9 ead">
+                <h3>{{ data.course?.name }}</h3>
+                <div>
+                  <label class="mt-3">Modalities:</label> <br />
+
+                  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <div v-for="data in data.modalities" :key='data' class="mx-1">
+                      <input type="radio" class="btn-check" name="btnradio" v-bind:id="data.name+index"
+                        autocomplete="off">
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data.name+index"
+                        @click="changeModalities(data, index)">{{
+                            data.name
+                        }}</label>
+                    </div>
+                  </div>
+
+                  <br />
+                  <label class="mt-3">Shifts :</label> <br />
+                  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                    <div v-for="data in data.shifts" :key='data' class="mx-1">
+                      <input type="radio" class="btn-check" name="btnradio1" v-bind:id="data.name+index"
+                        autocomplete="off">
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data.name+index"
+                        @click="changeShifts(data,index)">{{
+                            data.name
+                        }}</label>
+                    </div>
+                  </div>
+                  <br />
+                  <label class="mt-3">Units:</label> <br />
+                  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group"
+                    style="flex-wrap:wrap">
+                    <div v-for="data in data.units" :key='data' class="mx-1">
+                      <input type="radio" class="btn-check" name="btnradio2" v-bind:id="data.name+index"
+                        autocomplete="off">
+                      <label class="btn btn-outline-success btn-sm" v-bind:for="data.name+index"
+                        @click="changeUnits(data,index)">{{ data.name
+                        }}</label>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="my-4">
+              <hr />
+            </div>
+            <div v-if="details.scholarships?.length != 0">
+              <div class="payment" v-for="data in data.scholarships" :key='data'>
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <p>Modality: <b> {{ data?.content_modality?.name }} </b><br />
+                          Shift:<b> {{ data?.content_shift?.name }} </b><br />
+                          Unit:<b>{{ data?.unit?.name }} </b></p>
+                      </div>
+                      <div class="col-md-3">
+                        <p>Type: <b> {{ data?.content_type?.name }} </b><br />
+                          's Degree Duration: <br /> <b>{{ data?.duration }} {{ data?.duration_type }} </b><br />
+                          Installments:<b> {{ data?.discount_installments }} </b></p>
+                      </div>
+                      <div class="col-md-3">
+                        <p class="p-0">Monthly payment: <br />
+                          <span class="frombrl">From BRL {{ data?.original_price }}</span><br />
+                          For <b> BRL <br /><span class="brl">{{ data?.comission_amount }}</span> </b>
+                        </p>
+                        <small class="text-center">8785865 VB163.28 - 100</small>
+                      </div>
+                      <div class="col-md-3">
+                        <p>Scholarship: <b> {{ data?.percent }}%</b> <br />
+                          Total Savings:
+                          <b> BRL {{ data?.economy_total }} </b>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 text-center">
+                    <a href="#">see details</a> <br />
+                    <button class="btn btn-success btn-sm" type="button">CHOOSE THIS BAG</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="details.length == 0">
+              <p>Não há bolsas disponíveis com os itens selecionados, mude a unidade, turno ou modalidade selecionada.
+              </p>
+            </div>
           </div>
         </div>
         <!-- <div class="my-4">
