@@ -215,17 +215,17 @@ export default {
       }
     },
     modeChange(event) {
-      this.filterResults = this.details1
+      this.filterResults = this.details
       if (event.target.value != 'Ver Todos') {
         var filterData = [];
-        responseData.scholarships.filter((data, index) => {
+        this.details.filter((data, index) => {
           if (data.content_modality.name == event.target.value) {
             return filterData.push(data)
           }
         }
         )
-        this.details4['scholarships'] = filterData
-        this.details = filterData;
+        // this.details4['scholarships'] = filterData
+        // this.details = filterData;
       }
       else {
         this.details.scholarships = responseData.scholarships
