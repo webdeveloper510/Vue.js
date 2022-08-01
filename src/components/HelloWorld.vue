@@ -39,9 +39,6 @@ export default {
       this.details = responseData.scholarships
       // this.details5 = responseData.scholarships
       console.log(this.details1)
-      // this.details.map((data)=>{
-      //   console.log(data)
-      // })
       responseData.scholarships.map(async (t) => {
         if ((this.SCHOLARSHIPS.push(t), this.CS_DATA_LIST.length > 0)) {
           let e = this.CS_DATA_LIST.find((e) => e.course.name === t.course.name && e.school.name === t.school.name);
@@ -200,10 +197,6 @@ export default {
       var filter1 = []
       this.shiftValue = []
       this.shiftValue.push(data2.name)
-      filter1 = this.details
-      delete filter1.scholarships
-      console.log('filter', filter1)
-      this.CS_DATA_LIST[index].scholarships = filter1
       console.log(this.CS_DATA_LIST, index)
       if (this.modeValue.length == 0) {
         alert('selecione a modalidade')
@@ -251,6 +244,7 @@ export default {
         // this.details=filterData;
       }
     },
+    //this one 
     async modeChange(event) {
       let filterResults =[] 
       filterResults= this.CS_DATA_LIST
@@ -259,11 +253,11 @@ export default {
         this.details4.map(async (t,index) => {
           const e = await t;
           console.log(e)
-          let scholarship=[]
+          var scholarship=[]
           var shifts = [], modalities = [], units = []
-          for (let t = 0; t < this.details4[index].scholarships.length; t++) {
+          for (var t = 0; t < this.details4[index].scholarships.length; t++) {
              console.log(this.details4[index].scholarships[t].content_modality.name===event.target.value)
-             if(this.details4[index].scholarships[t].content_modality.name===event.target.value){
+             if(this.details4[index].scholarships[t].content_modality.name.toLowerCase()===event.target.value.toLowerCase()){
               // scholarship.push(this.details4[index].scholarships[t])
               // this.details6[index]=this.details4[index]
                scholarship.push(this.details4[index].scholarships[t])
@@ -284,11 +278,12 @@ export default {
         
       }
     },
-    modeChange1(event) {
+  async  modeChange1(event) {
       console.log(this.details6)
       let dataValue=[]
       let filterData=[];
       dataValue=this.details6
+      console.log(dataValue)
       if (event.target.value != 'Ver Todos') {
         if (this.details6.length > 0) {
           this.details6.map(async (t,index) => {
