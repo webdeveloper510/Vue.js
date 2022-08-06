@@ -26,6 +26,11 @@ export default {
       modeValue: [],
       shiftValue: [],
       status: Boolean = false,
+      selectedMode:{
+        content_modality:{name:''},
+        content_shift:{name:''},
+        content_type:{name:''}
+      }
     }
   },
   computed: {
@@ -245,38 +250,77 @@ export default {
       }
     },
     //this one 
-    async modeChange(event) {
-      let filterResults =[] 
-      filterResults= this.CS_DATA_LIST
+    modeChange(event) {
+     var filterResults=JSON.parse(JSON.stringify(this.CS_DATA_LIST));
+    
+      console.log(filterResults)
+    
+ 
       if (event.target.value != 'Ver Todos') {
-        this.details4=filterResults
-        this.details4.map(async (t,index) => {
-          const e = await t;
-          console.log(e)
-          var scholarship=[]
-          var shifts = [], modalities = [], units = []
-          for (var t = 0; t < this.details4[index].scholarships.length; t++) {
-             console.log(this.details4[index].scholarships[t].content_modality.name===event.target.value)
-             if(this.details4[index].scholarships[t].content_modality.name.toLowerCase()===event.target.value.toLowerCase()){
-              // scholarship.push(this.details4[index].scholarships[t])
-              // this.details6[index]=this.details4[index]
-               scholarship.push(this.details4[index].scholarships[t])
-             }
-            
-          }
-          if(scholarship.length>0){
-            delete t.scholarships
-            this.details6[index]=t
-             this.details6[index]['scholarships']=scholarship
+       
+       filterResults.map((t,index) => {
+    
+         
+        
+           var scholarships =  this.filterScholarships(t.scholarships);
+          
+         
+         // console.log(scholarships)
+         
+          if(scholarships.length>0){
+       
+           filterResults[index]['scholarships'] = scholarships
+           
           }
           else{
-             this.details6[index]=[]
+             filterResults[index]['scholarships'] = []
           }
-                    console.log(this.details6)
+                 
        
-        });
+       
+     
+      });
+       
         
+
+       
+
+    console.log( filterResults)
       }
+        
+    },
+      filterScholarships(scholarships){
+       var filteredScholarships =  scholarships.filter((el)=>{
+          
+           
+            const flag = this.filterArray(el)   
+          
+              
+            return flag < 0  ? true : false
+                 
+          });
+      
+          return filteredScholarships
+    },
+    filterArray(element,){
+      var flagArray= []
+      for (const [key, value] of Object.entries(this.selectedMode)) {
+             for(const [key1,value1] of Object.entries(value)){
+             if(this.selectedMode[key][key1]!=''){
+          
+                  flagArray.push(this.selectedMode[key][key1]==element[key][key1])
+              
+             }
+             }
+             
+
+
+                
+            }
+            
+        
+            return flagArray.indexOf(false)
+              
     },
   async  modeChange1(event) {
       console.log(this.details6)
@@ -291,24 +335,25 @@ export default {
           console.log(e)
           let scholarship=[]
           var shifts = [], modalities = [], units = []
-          for (let t = 0; t < dataValue[index].scholarships.length; t++) {
-             console.log(dataValue[index].scholarships[t].content_shift.name===event.target.value)
-             if(dataValue[index].scholarships[t].content_shift.name===event.target.value){
+          for (let j = 0; j < dataValue[index].scholarships.length; j++) {
+             console.log(dataValue[index].scholarships[j].content_shift.name===event.target.value)
+             if(dataValue[index].scholarships[j].content_shift.name===event.target.value){
               // scholarship.push(this.details4[index].scholarships[t])
               // this.details6[index]=this.details4[index]
-               scholarship.push(dataValue[index].scholarships[t])
+               scholarship.push(dataValue[index].scholarships[j])
              }
             
           }
           if(scholarship.length>0){
             delete t.scholarships
-            filterData[index]=t
-             filterData[index]['scholarships']=scholarship
+            t['scholarships'] = scholarship
+            filterData.push(t)
+             //filterData[index]['scholarships']=scholarship
           }
           else{
-           console.log( filterData[index])
+          // console.log( filterData[index])
           }
-                    console.log(filterData)
+                   // console.log(filterData)
        
         });
         }
@@ -388,11 +433,11 @@ export default {
               </select>
               <label class="mb-3">Mode:</label> <br />
               <div v-for="data in mode" :key='data'>
-                <input type="radio" name="test_id1" @change="modeChange($event)" v-bind:value="data"> {{ data }}
+                <input type="radio" name="test_id1" v-model="selectedMode.content_modality.name" @change="modeChange($event)" v-bind:value="data"> {{ data }}
               </div>
               <label class="mb-3">Shift:</label> <br />
               <div v-for="data in shift" :key='data'>
-                <input type="radio" name="test_id2" @change="modeChange1($event)" v-bind:value="data"> {{ data }}
+                <input type="radio" name="test_id2" v-model="selectedMode.content_shift.name" @change="modeChange($event)" v-bind:value="data"> {{ data }}
               </div>
               <label>Course Level:</label>
               <select class="form-select mb-3" aria-label="Default select example">
@@ -410,7 +455,7 @@ export default {
               </select>
               <label class="mb-3">Course Type:</label>
               <div v-for="data in course" :key='data'>
-                <input type="radio" name="test_id3" @change="modeChange2($event)" v-bind:value="data"> {{ data
+                <input type="radio" name="test_id3" v-model="selectedMode.content_type.name" @change="modeChange($event)" v-bind:value="data"> {{ data
                 }}
               </div>
             </form>
