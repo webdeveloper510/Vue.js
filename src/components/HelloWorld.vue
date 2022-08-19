@@ -173,10 +173,8 @@ export default {
       var filterData = {
         scholarships: []
       }
-      if (this.modeValue.length > 0 && this.shiftValue.length > 0) {
-        location.reload()
-      }
-      else {
+   
+ 
         var filter1 = []
         filter1 = this.details5
         this.CS_DATA_LIST[index].scholarships = this.details5[index].scholarships
@@ -193,7 +191,6 @@ export default {
         this.CS_DATA_LIST[index]['scholarships'] = filterData.scholarships
         this.details = filterData.scholarships
         console.log('filterData', this.details)
-      }
 
 
     },
